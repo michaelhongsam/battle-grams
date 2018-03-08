@@ -1,3 +1,7 @@
+/* .root{
+  text-align: center;
+} */
+
 .App {
   text-align: center;
 }
@@ -26,3 +30,26 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+/* .container {
+  border-style: dashed;
+  display: flex;
+  align-items: center;
+} */
+
+.tile-socket {
+  border-style: solid;
+  width: 4vw;
+  height: 10vh;
+}
+
+#grid {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#letter-bank {
+  margin-left: auto;
+  margin-right: auto;
+}
+

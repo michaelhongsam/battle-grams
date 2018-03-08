@@ -2,13 +2,18 @@ import React /*, { Component } */ from 'react';
 import logo from './logo.svg';
 import Grid from './components/grid';
 import Bank from './components/bank';
-// import TileSocket from './components/tileSocket'; this was just a test
+
+import { DragDropContextProvider } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+// import TileSlot from './components/tileSocket'; this was just a test
 
 import './App.css';
 
 const App = () => {
   // render() {
     return (
+      <DragDropContextProvider backend={HTML5Backend}>
+
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
@@ -25,6 +30,8 @@ const App = () => {
           // <TileSocket /> this was just a test
         }
       </div>
+      </DragDropContextProvider>
+
     );
   }
 // }

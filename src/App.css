@@ -37,10 +37,17 @@
   align-items: center;
 } */
 
-.tile-socket {
+.tile-slot {
   border-style: solid;
   width: 75px;
   height: 75px;
+}
+
+.tile {
+  border-style: solid;
+  width: 60px;
+  height: 60px;
+  border-radius: 5px;
 }
 
 #grid {

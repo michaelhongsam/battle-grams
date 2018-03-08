@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
-import Tile from './tile'
+
+import TileSlot from './tileSlot';
 
 export default class Bank extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      size: 16,
-      pouch: [
-        'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
-        'B', 'B', 'B',
-        'C', 'C', 'C',
-        'D', 'D', 'D', 'D', 'D', 'D',
-        'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
-        'F', 'F', 'F',
-        'G', 'G', 'G', 'G',
-        'H', 'H', 'H',
-        'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I',
-        'J', 'J',
-        'K', 'K',
-        'L', 'L', 'L', 'L', 'L',
-        'M', 'M', 'M',
-        'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N',
-        'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
-        'P', 'P', 'P',
-        'Q', 'Q',
-        'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R',
-        'S', 'S', 'S', 'S', 'S', 'S',
-        'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T',
-        'U', 'U', 'U', 'U', 'U', 'U',
-        'V', 'V', 'V',
-        'W', 'W', 'W',
-        'X', 'X',
-        'Y', 'Y', 'Y',
-        'Z', 'Z',
-      ]
+      size: 10,
+      //   pouch: [
+      //     'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
+      //     'B', 'B', 'B',
+      //     'C', 'C', 'C',
+      //     'D', 'D', 'D', 'D', 'D', 'D',
+      //     'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E', 'E',
+      //     'F', 'F', 'F',
+      //     'G', 'G', 'G', 'G',
+      //     'H', 'H', 'H',
+      //     'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I', 'I',
+      //     'J', 'J',
+      //     'K', 'K',
+      //     'L', 'L', 'L', 'L', 'L',
+      //     'M', 'M', 'M',
+      //     'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N',
+      //     'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O',
+      //     'P', 'P', 'P',
+      //     'Q', 'Q',
+      //     'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R', 'R',
+      //     'S', 'S', 'S', 'S', 'S', 'S',
+      //     'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T',
+      //     'U', 'U', 'U', 'U', 'U', 'U',
+      //     'V', 'V', 'V',
+      //     'W', 'W', 'W',
+      //     'X', 'X',
+      //     'Y', 'Y', 'Y',
+      //     'Z', 'Z',
+      //   ]
     }
   }
   shuffle(deck) {
@@ -50,7 +51,7 @@ export default class Bank extends Component {
 
   render() {
     // console.log('pouch has this many tiles: ', this.state.length)
-    
+
     let shuffledPouch = this.shuffle([
       'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
       'B', 'B', 'B',
@@ -83,16 +84,16 @@ export default class Bank extends Component {
     let columns = [];
     for (var i = 0; i < this.state.size; i++) {
       let cellID = `${i}`
-      columns.push(<td key={cellID} id={cellID}><Tile value = { shuffledPouch.pop() } /></td>)
+      columns.push(<td key={cellID} id={cellID}><TileSlot value={shuffledPouch.pop()} /></td>)
     }
     return (
-      <div className="container">
-        <table id="letter-bank">
-          <tbody>
-            {columns}
-          </tbody>
-        </table>
-      </div>
+        <div className = "container">
+          <table id = "letter-bank">
+            <tbody>
+              {columns}
+            </tbody>
+          </table>
+        </div>
     )
   }
 }

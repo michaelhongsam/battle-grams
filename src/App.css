@@ -39,8 +39,8 @@
 
 .tile-socket {
   border-style: solid;
-  width: 4vw;
-  height: 10vh;
+  width: 75px;
+  height: 75px;
 }
 
 #grid {

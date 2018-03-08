@@ -8,14 +8,14 @@ export default class Grid extends Component {
   }
   render() {
     let columns = [];
-    let head = [<td key="spacer" />];
+    let head = [<th key="spacer" />];
     for (var i = 0; i < this.state.size; i++) {
       let columnID = `col ${i}`
-      let cell = [`row ${i}`]
-      head.push(<td key={columnID} id={columnID}>{columnID}</td>)
+      let cell = [<td key={`row ${i}`}><span>{`row ${i}`}</span></td>]
+      head.push(<th key={columnID} id={columnID}>{columnID}</th>)
       for (var idx = 0; idx < this.state.size; idx++) {
         let cellID = `${idx}-${i}`
-        cell.push(<td key={cellID} id={cellID}><TileSlot value = {``} /></td>)
+        cell.push(<td key={cellID} id={cellID}><TileSlot value={``} /></td>)
       }
       columns.push(<tr key={i} id={columnID}>{cell}</tr>)
     }
@@ -23,7 +23,9 @@ export default class Grid extends Component {
       <div className="container">
         <table id="grid">
           <thead>
-            {head}
+            <tr>
+              {head}
+            </tr>
           </thead>
           <tbody>
             {columns}

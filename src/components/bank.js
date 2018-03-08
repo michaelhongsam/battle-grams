@@ -87,13 +87,15 @@ export default class Bank extends Component {
       columns.push(<td key={cellID} id={cellID}><TileSlot value={shuffledPouch.pop()} /></td>)
     }
     return (
-        <div className = "container">
-          <table id = "letter-bank">
-            <tbody>
+      <div className="container">
+        <table id="letter-bank">
+          <tbody>
+            <tr>
               {columns}
-            </tbody>
-          </table>
-        </div>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     )
   }
 }

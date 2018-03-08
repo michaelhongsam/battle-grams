@@ -42,7 +42,7 @@ class Tile extends Component {
     const { letter, connectDragSource } = this.props
 
     return connectDragSource(
-      <div className="tile">A
+      <div className="tile"><span>A</span>
         {
           // `${letter}` 
         }

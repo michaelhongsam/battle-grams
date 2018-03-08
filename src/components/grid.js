@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import TileSocket from './tileSocket'
+import Tile from './tile'
 
 export default class Grid extends Component {
   constructor(props) {
@@ -10,12 +10,12 @@ export default class Grid extends Component {
     let columns = [];
     let head = [<td key="spacer" />];
     for (var i = 0; i < this.state.size; i++) {
-      let columnID = `column${i}`
+      let columnID = `col ${i}`
       let cell = [`row ${i}`]
       head.push(<td key={columnID} id={columnID}>{columnID}</td>)
       for (var idx = 0; idx < this.state.size; idx++) {
         let cellID = `${idx}-${i}`
-        cell.push(<td key={cellID} id={cellID}><TileSocket /></td>)
+        cell.push(<td key={cellID} id={cellID}><Tile value = {``} /></td>)
       }
       columns.push(<tr key={i} id={columnID}>{cell}</tr>)
     }

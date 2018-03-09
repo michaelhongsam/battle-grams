@@ -15,7 +15,7 @@ export default class Grid extends Component {
       head.push(<th key={columnID} id={columnID}>{columnID}</th>)
       for (var idx = 0; idx < this.state.size; idx++) {
         let cellID = `${idx}-${i}`
-        cell.push(<td key={cellID} id={cellID}><TileSlot value={``} /></td>)
+        cell.push(<td key={cellID} id={cellID}><TileSlot cellID={cellID} /></td>)
       }
       columns.push(<tr key={i} id={columnID}>{cell}</tr>)
     }

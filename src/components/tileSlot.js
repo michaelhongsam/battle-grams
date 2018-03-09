@@ -6,8 +6,8 @@ import { DropTarget } from 'react-dnd';
 import ItemTypes from './ItemTypes';
 
 const tileTarget = {
-  drop() {
-    return { name: 'tileSlot' }
+  drop(props) {
+    return { name: 'tileSlot', cellID: `${props.cellID}` }
   },
 }
 

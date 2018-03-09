@@ -12,10 +12,11 @@ const tileSource = {
 
 	endDrag(props, monitor) {
 		const item = monitor.getItem()
-		const dropResult = monitor.getDropResult()
+    const dropResult = monitor.getDropResult()
+    console.log(dropResult)
 
 		if (dropResult) {
-			alert(`You dropped ${item.letter} into ${dropResult}!`) // eslint-disable-line no-alert
+			alert(`You dropped ${item.letter} into ${dropResult.cellID}!`) // eslint-disable-line no-alert
 		}
 	},
 }

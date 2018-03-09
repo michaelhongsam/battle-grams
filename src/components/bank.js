@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Tile from './tile';
 import TileSlot from './tileSlot';
+import Tile from './tile';
 
 export default class Bank extends Component {
   constructor(props) {
@@ -83,13 +84,14 @@ export default class Bank extends Component {
     ]);
 
     let columns = [];
-    for (let i = 0; i < this.state.size; i++) {
-      let cellID = `${i}`;
-      console.log('shuffledPouch: ', shuffledPouch[0]);
-      columns.push(<td key={cellID} id={cellID}>
-        <TileSlot>
-          <Tile letter={shuffledPouch.pop()} />
-        </TileSlot></td>);
+    for (var i = 0; i < this.state.size; i++) {
+      let cellID = `${i}`
+      columns.push(
+        <td key={cellID} id={cellID}>
+          <TileSlot  >
+            <Tile letter={shuffledPouch.pop()} />
+          </TileSlot>
+        </td>)
     }
     return (
       <div className="container">

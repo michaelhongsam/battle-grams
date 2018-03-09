@@ -43,7 +43,7 @@ export default class Bank extends Component {
             </tr>
           </tbody>
         </table>
-        <button type="button" onClick={this.shuffleChildren}>Reshuffle</button>
+        <button type="button" id="reshuffle-button" onClick={this.shuffleChildren}>Reshuffle</button>
       </div>
     );
   }

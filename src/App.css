@@ -56,3 +56,8 @@
   margin-right: auto;
 }
 
+#reshuffle-button {
+  width:100px;
+  height:50px;
+  font-size: 100%;
+}

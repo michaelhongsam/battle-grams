@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Tile from './tile';
 import TileSlot from './tileSlot';
-import Tile from './tile';
 
 export default class Bank extends Component {
   constructor(props) {

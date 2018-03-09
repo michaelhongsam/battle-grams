@@ -15,7 +15,7 @@ const tileSource = {
 		const dropResult = monitor.getDropResult()
 
 		if (dropResult) {
-			alert(`You dropped something into something!`) // eslint-disable-line no-alert
+			alert(`You dropped ${item.letter} into ${dropResult}!`) // eslint-disable-line no-alert
 		}
 	},
 }
@@ -42,10 +42,8 @@ class Tile extends Component {
     const { letter, connectDragSource } = this.props
 
     return connectDragSource(
-      <div className="tile"><span>A</span>
-        {
-          // `${letter}` 
-        }
+      <div className="tile">
+        <span>{letter}</span>
       </div>
     )
   }

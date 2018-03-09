@@ -26,14 +26,17 @@ const propTypes = {
 }
 
 class TileSlot extends Component {
-  
+
   render() {
     const { canDrop, isOver, connectDropTarget, letter } = this.props
     // const isActive = canDrop && isOver
-    
+
     return connectDropTarget(
       <div className = "tile-slot">
-        <Tile value={letter} />
+      {
+        // if (tile exists in the state at a cell id) return <Tile value = that letter />
+        this.props.children
+      }
       </div>
     )
   }

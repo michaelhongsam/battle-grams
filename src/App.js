@@ -5,7 +5,6 @@ import Bank from './components/bank';
 
 import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-// import TileSlot from './components/tileSocket'; this was just a test
 
 import './App.css';
 

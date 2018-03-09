@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import TileSlot from './tileSlot';
+import Tile from './tile';
 
 export default class Bank extends Component {
   constructor(props) {
@@ -84,7 +85,13 @@ export default class Bank extends Component {
     let columns = [];
     for (var i = 0; i < this.state.size; i++) {
       let cellID = `${i}`
-      columns.push(<td key={cellID} id={cellID}><TileSlot value={shuffledPouch.pop()} /></td>)
+      columns.push(
+        <td key={cellID} id={cellID}>
+        <TileSlot  >
+          <Tile letter={shuffledPouch.pop()} />
+        </TileSlot>
+
+        </td>)
     }
     return (
       <div className="container">

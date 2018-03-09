@@ -31,8 +31,7 @@ const propTypes = {
 class TileSlot extends Component {
 
   render() {
-    const { canDrop, isOver, connectDropTarget } = this.props;
-    // const isActive = canDrop && isOver
+    const { connectDropTarget } = this.props;
 
     return connectDropTarget(
       <div className = "tile-slot">

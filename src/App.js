@@ -1,7 +1,8 @@
-import React /*, { Component } */ from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import Grid from './components/grid';
 import Bank from './components/bank';
+import Footer from './components/footer';
 
 import { DragDropContextProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
@@ -9,7 +10,6 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import './App.css';
 
 const App = () => {
-  // render() {
     return (
       <DragDropContextProvider backend={HTML5Backend}>
       <div className="App">
@@ -19,9 +19,9 @@ const App = () => {
         </header>
         <Grid />
         <Bank />
+        <Footer />
       </div>
       </DragDropContextProvider>
-
     );
   };
 

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-
+import Tile from './tile';
 import TileSlot from './tileSlot';
 
 export default class Bank extends Component {
   constructor(props) {
     super(props);
+    this.shuffle = this.shuffle.bind(this);
     this.state = {
       size: 10,
       //   pouch: [
@@ -35,7 +36,7 @@ export default class Bank extends Component {
       //     'Y', 'Y', 'Y',
       //     'Z', 'Z',
       //   ]
-    }
+    };
   }
   shuffle(deck) {
     let randomizedDeck = [];
@@ -43,7 +44,7 @@ export default class Bank extends Component {
     while (array.length !== 0) {
       let rIndex = Math.floor(array.length * Math.random());
       randomizedDeck.push(array[rIndex]);
-      array.splice(rIndex, 1)
+      array.splice(rIndex, 1);
     }
     return randomizedDeck;
   }
@@ -79,12 +80,16 @@ export default class Bank extends Component {
       'X', 'X',
       'Y', 'Y', 'Y',
       'Z', 'Z',
-    ])
+    ]);
 
     let columns = [];
-    for (var i = 0; i < this.state.size; i++) {
-      let cellID = `${i}`
-      columns.push(<td key={cellID} id={cellID}><TileSlot value={shuffledPouch.pop()} /></td>)
+    for (let i = 0; i < this.state.size; i++) {
+      let cellID = `${i}`;
+      console.log('shuffledPouch: ', shuffledPouch[0]);
+      columns.push(<td key={cellID} id={cellID}>
+        <TileSlot>
+          <Tile letter={shuffledPouch.pop()} />
+        </TileSlot></td>);
     }
     return (
       <div className="container">
@@ -96,6 +101,6 @@ export default class Bank extends Component {
           </tbody>
         </table>
       </div>
-    )
+    );
   }
 }

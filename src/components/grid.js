@@ -9,6 +9,8 @@ export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = { size: 8, totalSize: 64 };
+    this.renderTile = this.renderTile.bind(this);
+    this.renderTileSlot = this.renderTileSlot.bind(this);
   }
 
   static propTypes = {

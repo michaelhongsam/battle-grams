@@ -23,15 +23,16 @@ const style = {
 
 const tileSource = {
 	beginDrag(props) {
-		return {
-			letter: props.letter,
+    return {
+      letter: props.letter,
 		};
 	},
-
+  
 	endDrag(props, monitor) {
-		const item = monitor.getItem();
+    const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 		if (dropResult) {
+      console.log('tile.js - unmount this tile');
 			alert(`You dropped ${item.letter} into ${dropResult.cellId}!`); // eslint-disable-line no-alert
 		}
 	},

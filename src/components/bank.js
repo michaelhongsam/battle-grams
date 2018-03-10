@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import Tile from './tile';
 import TileSlot from './tileSlot';
 import { shuffle, pouch } from '../utils';
+// import bank from './game'
 
 export default class Bank extends Component {
   constructor() {
     super();
     this.state = {
       size: 10,
-      columns: []
+      columns: [],
     };
     this.shuffledPouch = shuffle(pouch);
     this.currentTiles = [];

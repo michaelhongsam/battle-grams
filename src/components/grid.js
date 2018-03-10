@@ -1,53 +1,59 @@
 import React, { Component } from 'react';
-import TileSlot from './tileSlot';
+import GridSquare from './GridSquare';
+import Tile from './tile';
+
+import PropTypes from 'prop-types';
+
 
 export default class Grid extends Component {
   constructor(props) {
     super(props);
-    this.state = { size: 8 };
+    this.state = { size: 8, totalSize: 64 };
   }
-  render() {
-    let columns = [];
-    let head = [<th key="spacer" />];
-    for (let i = 0; i < this.state.size; ++i) {
-      let columnID = `col ${i}`;
-      let cell = [
-      <td key={`row ${i}`}>
-        <span>{`row ${i}`}</span>
-      </td>];
 
-      head.push(
-      <th key={columnID} id={columnID}>
-        {columnID}
-      </th>);
+  static propTypes = {
+    arrTilePositions:
+      PropTypes.arrayOf(
+        PropTypes.object.isRequired)
+        .isRequired,
+  }
 
-      for (let idx = 0; idx < this.state.size; ++idx) {
-        let cellID = `${idx}-${i}`;
-
-        cell.push(
-        <td key={cellID} id={cellID}>
-          <TileSlot cellId={cellID} />
-        </td>);
-      }
-      columns.push(
-      <tr key={i} id={columnID}>
-        {cell}
-      </tr>);
-    }
+  renderTileSlot(i) {
+    const col = i % this.state.size;
+    const row = Math.floor(i / this.state.size)
 
     return (
-      <div className="container">
-        <table id="grid">
-          <thead>
-            <tr>
-              {head}
-            </tr>
-          </thead>
-          <tbody>
-            {columns}
-          </tbody>
-        </table>
+      <div key={i}>
+        <GridSquare row={row} col={col}>
+          {this.renderTile(row, col)}
+        </GridSquare>
       </div>
-    );
+    )
+  }
+
+  renderTile(row, col) {
+    const { tileRow, tileCol, letter } = this.props.arrTilePositions.filter(tilePos => tilePos.row === row && tilePos.col === col);
+
+    const isTileHere = row === tileRow && col === tileCol;
+
+    return isTileHere ? <Tile letter={letter} /> : null
+
+  }
+
+
+  render() {
+    const slots = [];
+    for (let i = 0; i < this.state.totalSize; ++i) {
+      slots.push(this.renderTileSlot(i))
+    }
+
+  return(
+    <div className = "container" >
+      <table id="grid">
+        {slots}
+      </table>
+    </div>
+  )
   }
 }
+

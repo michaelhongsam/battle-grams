@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-// import { withRouter } from 'react-router-dom';
+import React /*, { Component }*/ from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { updateBank } from '../store';
@@ -10,47 +10,46 @@ import { shuffle } from '../utils/index';
 import Tile from './tile';
 import GridSquare from './GridSquare';
 
-class Bank extends Component {
-  constructor(props) {
-    super(props);
-    this.renderTile = this.renderTile.bind(this);
-    this.renderTileSlot = this.renderTileSlot.bind(this);
-  }
+function renderTileSlot(col, props) {
+  const row = 99; // we are using 99 as an indicator of the Bank
+  return (
+    <div key={col}>
+      <GridSquare row={row} col={col}>
+        {renderTile(row, col, props)}
+      </GridSquare>
+    </div>
+  )
+}
 
-  renderTileSlot(col) {
-    const row = 99; // we are using 99 as an indicator of the Bank
+function renderTile(row, col, props) {
+  let { bank } = props;
+  let tile = bank[col];
+  // return bank[col] ? <Tile letter={bank[col]} row={row} col={col} /> : null;
+  // return (letter) ? <Tile letter={letter} row={99} col={col} /> : null;
+  if (tile && tile.letter) {
     return (
-      <div key={col}>
-        <GridSquare row={row} col={col}>
-          {this.renderTile(row, col)}
-        </GridSquare>
-      </div>
+      <Tile letter={tile.letter} row={99} col={col} />
     )
   }
-
-  renderTile(row, col) {
-    let { bank } = this.props;
-    let tile = bank.find(function (ele) {
-      return ele.col === col
-    });
-    // return bank[col] ? <Tile letter={bank[col]} row={row} col={col} /> : null;
-    // return (letter) ? <Tile letter={letter} row={99} col={col} /> : null;
-    if (tile) {
-      return (
-        <Tile letter={tile.letter} row={99} col={col} />
-      )
-    }
-    else {
-      return null
-    }
+  else {
+    return null
   }
+}
 
-  render() {
+function Bank (props) {
+  // constructor(props) {
+  //   super(props);
+  //   this.renderTile = this.renderTile.bind(this);
+  //   this.renderTileSlot = this.renderTileSlot.bind(this);
+  // }
+
+
+  // render() {
     const slots = [];
     for (let col = 0; col < 10; ++col) {
       slots.push(
         <td key={col} id={col}>
-          {this.renderTileSlot(col)}
+          {renderTileSlot(col, props)}
         </td>
       )
     }
@@ -68,14 +67,14 @@ class Bank extends Component {
           type="button"
           id="reshuffle-button"
           onClick={() => {
-            this.props.shuffleBank(this.props.bank)
+            props.shuffleBank(props.bank)
           }}>
           Reshuffle
         </button>
       </div>
     );
   }
-}
+// }
 
 Bank.propTypes = {
   bank: PropTypes.array,
@@ -92,4 +91,4 @@ const mapDispatch = dispatch => ({
   }
 })
 
-export default /*withRouter(*/connect(mapState, mapDispatch)(Bank);
+export default withRouter(connect(mapState, mapDispatch)(Bank));

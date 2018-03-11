@@ -1,8 +1,8 @@
-import { createStore, /*combineReducers,*/ applyMiddleware } from 'redux'
-import createLogger from 'redux-logger'
-import loggingMiddleware from 'redux-logger'; 
-import thunkMiddleware from 'redux-thunk'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, /*combineReducers,*/ applyMiddleware } from 'redux';
+// import createLogger from 'redux-logger';
+import loggingMiddleware from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+// import { composeWithDevTools } from 'redux-devtools-extension'
 
 // INITIAL STATE
 const initialState = {
@@ -19,8 +19,8 @@ export function updateGrid(grid) {
   console.log('updating grid with... ', grid)
   const action = { type: UPDATE_GRID, grid };
   return action;
-
-} export function updateBank(bank) {
+}
+ export function updateBank(bank) {
   console.log('updating bank with... ', bank)
   const action = { type: UPDATE_BANK, bank };
   return action;

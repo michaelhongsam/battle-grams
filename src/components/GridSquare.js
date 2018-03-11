@@ -35,7 +35,7 @@ function moveTile (source, target) {
     modifiedGrid[gridIdx] = { letter: null, row: source.row, col: source.col };
 	}
 	console.log('modifiedGrid: ', modifiedGrid)
-	console.log('modifiedBarn: ', modifiedBank)
+	console.log('modifiedBank: ', modifiedBank)
 
 	store.dispatch(updateGrid(modifiedGrid));
 	store.dispatch(updateBank(modifiedBank));
@@ -50,6 +50,10 @@ const squareTarget = {
 		}
 		console.log('source: ', source, 'target: ', target)
 		moveTile(source, target)
+		return {
+			row: target.row,
+			col: target.col,
+		}
 	},
 }
 
@@ -60,6 +64,7 @@ function collect(connect) {
 }
 
 class GridSquare extends Component {
+
 	static propTypes = {
 		connectDropTarget: PropTypes.func.isRequired,
 		children: PropTypes.node,

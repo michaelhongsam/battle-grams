@@ -5,7 +5,7 @@ import Bank from './components/bank';
 import Footer from './components/footer';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-// import { observe } from './utils/game';
+// import { connect } from 'react-redux';
 
 import store, { updateGrid, updateBank } from './store';
 
@@ -16,7 +16,7 @@ import './App.css';
 class App extends React.Component {
   // constructor(props) {
   //   super(props);
-  //   this.unobserve = observe(this.handleChange.bind(this));
+  //   // this.unobserve = observe(this.handleChange.bind(this));
   // }
 
   componentDidMount() {
@@ -64,8 +64,8 @@ class App extends React.Component {
           <h1 className="App-title">Welcome to BATTLE-GRAMS</h1>
         </header>
         {
-          // <Grid tilePositions={tilePositions} />
-          // <Bank tilePositions={tilePositions} />
+          // <Grid grid={this.props.grid} />
+          // <Bank bank={this.props.bank} />
         }
         <Grid />
         <Bank />
@@ -81,4 +81,8 @@ class App extends React.Component {
 //   bank: state.bank,
 // })
 
+// const mapDispatch = null;
+
+// export default connect(mapState, mapDispatch)(App);
 export default App;
+

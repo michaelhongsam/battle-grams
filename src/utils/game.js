@@ -14,7 +14,7 @@ function calculateValidRow(row){
     }
   }
   console.log('row word is: ', word)
-  axios.get(`https://www.anagramica.com/lookup/cat`)
+  axios.get(`http://www.anagramica.com/lookup/cat`)
   .then(res => res.data)
   .then(data => console.log('row res ', data))
 }
@@ -30,7 +30,7 @@ function calculateValidCol(col){
     }
   }
   console.log('col word is: ', word)
-  axios.get(`https://www.anagramica.com/lookup/dog`)
+  axios.get(`http://www.anagramica.com/lookup/dog`)
   .then(res => res.data)
   .then(data => console.log('col res ', data))
 }

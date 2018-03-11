@@ -1,42 +1,82 @@
-import React, { Component } from 'react';
-import TileSlot from './tileSlot';
+import React /*, { Component }*/ from 'react';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-export default class Grid extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { size: 8 };
+// import { updateGrid } from '../store';
+import {connect} from 'react-redux';
+
+import Tile from './tile';
+import GridSquare from './GridSquare';
+
+function renderTileSlot(row, col, props) {
+  return (
+    <div key={`${row} - ${col}`}>
+      <GridSquare row={row} col={col}>
+        {renderTile(row, col, props)}
+      </GridSquare>
+    </div>
+  )
+}
+
+function renderTile(row, col, props) {
+  let { grid } = props;
+  let tile = grid.find(function (ele){
+    return (row === ele.row && col === ele.col);
+  });
+  // return (letter) ? <Tile letter={letter} row={row} col={col} /> : null;
+  if (tile && tile.letter) {
+    return (
+      <Tile letter={tile.letter} row={row} col={col} />
+    )
   }
-  render() {
-    let columns = [];
+  else {
+    return null
+  }
+}
+function Grid (props) {
+  // constructor(props) {
+  //   super(props);
+
+  //   this.state = {
+  //     size: 8,
+  //   }
+  //   this.renderTile = this.renderTile.bind(this);
+  //   this.renderTileSlot = this.renderTileSlot.bind(this);
+  // }
+
+
+
+
+  // render() {
+    const columns = [];
     let head = [<th key="spacer" />];
-    for (let i = 0; i < this.state.size; ++i) {
-      let columnID = `col ${i}`;
+    for (let col = 0; col < 8; ++col) {
+      let columnID = `col ${col}`;
       let cell = [
-      <td key={`row ${i}`}>
-        <span>{`row ${i}`}</span>
-      </td>];
-
+        <td key={`row ${col}`}>
+          <span>{`row ${col}`}</span>
+        </td>];
       head.push(
-      <th key={columnID} id={columnID}>
-        {columnID}
-      </th>);
+        <th key={columnID} id={columnID}>
+          {columnID}
+        </th>);
 
-      for (let idx = 0; idx < this.state.size; ++idx) {
-        let cellID = `${idx}-${i}`;
-
+      for (let row = 0; row < 8; ++row) {
+        let cellID = `row ${row} - col ${col}`;
         cell.push(
-        <td key={cellID} id={cellID}>
-          <TileSlot cellId={cellID} />
-        </td>);
+          <td key={cellID} id={cellID}>
+            {renderTileSlot(row, col, props)}
+          </td>);
       }
       columns.push(
-      <tr key={i} id={columnID}>
-        {cell}
-      </tr>);
+        <tr key={col} id={columnID}>
+          {cell}
+        </tr>
+      );
     }
 
     return (
-      <div className="container">
+      <div className="container" >
         <table id="grid">
           <thead>
             <tr>
@@ -48,6 +88,21 @@ export default class Grid extends Component {
           </tbody>
         </table>
       </div>
-    );
+    )
   }
+// }
+
+Grid.propTypes = {
+  grid: PropTypes.array,
 }
+
+const mapState = state => ({
+  grid: state.grid
+})
+
+const mapDispatch = null;
+// const mapDispatch = dispatch => ({
+//   somefunc: thing => dispatch(somefunc(thing))
+// })
+
+export default withRouter(connect(mapState, mapDispatch)(Grid));

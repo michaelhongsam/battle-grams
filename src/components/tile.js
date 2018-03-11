@@ -23,16 +23,18 @@ const style = {
 
 const tileSource = {
 	beginDrag(props) {
-		return {
-			letter: props.letter,
+    return {
+      letter: props.letter,
+      row: props.row,
+      col: props.col,
 		};
 	},
-
+  
 	endDrag(props, monitor) {
-		const item = monitor.getItem();
+    const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 		if (dropResult) {
-			alert(`You dropped ${item.letter} into ${dropResult.cellId}!`); // eslint-disable-line no-alert
+			alert(`You dropped ${item.letter} into row ${dropResult.row} - column ${dropResult.col}!`); // eslint-disable-line no-alert
 		}
 	},
 };

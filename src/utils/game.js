@@ -31,22 +31,34 @@ export function observe(obj) {
 	};
 }
 
-export function moveTile(row, col) {
-  // source = {
-  //   letter: "A",
-  //   from: "bank"
-  //   col: 4;
+export function moveTile(source, target) {
 
-  // }
-  // target = {
-  //   letter: "A",
-  //   toRow: 1,
-  //   toCol: 1,
-  // }
+  let modifiedBank = tilePositions.bank;
+  let modifiedGrid = tilePositions.grid
 
+  if (target.row === 99) {
+    modifiedBank[target.col] = target.letter;
+  }
+  else
+  {
+    let gridIdx = modifiedGrid.findIndex( ele => {
+      return ele.row === target.row && ele.col === target.col;
+    })
+    modifiedGrid[gridIdx] = { letter: target.letter, row: target.row, col: target.col };
+  }
 
-  // positions = Object.assign( {}, positions, {
-
-  // }
+  if (source.row === 99) {
+    modifiedBank[target.col] = null;
+  }
+  else {
+    let gridIdx = modifiedGrid.findIndex( ele => {
+      return ele.row === source.row && ele.col === source.col;
+    })
+    modifiedGrid[gridIdx] = { letter: null, row: source.row, col: source.col };
+  }
+  tilePositions = {
+    grid: modifiedGrid,
+    bank: modifiedBank,
+  }
 	emitChange();
 }

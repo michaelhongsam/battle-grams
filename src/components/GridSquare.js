@@ -9,9 +9,13 @@ import ItemTypes from './ItemTypes'
 
 const squareTarget = {
 	drop(props, monitor) {
-		// let item = monitor.getItem();
-		console.log(props)
-		moveTile(props.col, props.row)
+		let source = monitor.getItem();
+		let target = {
+			col: props.col,
+			row: props.row,
+		}
+		console.log('source: ', source, 'target: ', target)
+		moveTile(source, target)
 	},
 }
 

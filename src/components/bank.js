@@ -23,21 +23,21 @@ export default class Bank extends Component {
   // < button type = "button" id = "reshuffle-button" onClick = { this.shuffleChildren } > Reshuffle</button>
 
   renderTileSlot(i) {
-    const col = i % 10;
-    const row = 9;
+    const col = i;
+    const row = 99;
 
     return (
-      <div key={i}>
+      <div key={col}>
         <GridSquare row={row} col={col}>
-          {this.renderTile(i)}
+          {this.renderTile(row, col)}
         </GridSquare>
       </div>
     )
   }
 
-  renderTile(i) {
+  renderTile(row, col) {
     let bank = this.props.tilePositions.bank;
-    return bank[i] ? <Tile letter={bank[i]} /> : null;
+    return bank[col] ? <Tile letter={bank[col]} row={row} col={col} /> : null;
   }
 
   render() {

@@ -25,6 +25,8 @@ const tileSource = {
 	beginDrag(props) {
     return {
       letter: props.letter,
+      row: props.row,
+      col: props.col,
 		};
 	},
   
@@ -32,8 +34,7 @@ const tileSource = {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 		if (dropResult) {
-      console.log('tile.js - unmount this tile');
-			alert(`You dropped ${item.letter} into ${dropResult.cellId}!`); // eslint-disable-line no-alert
+			alert(`You dropped ${item.letter} into row ${dropResult.row} - column ${dropResult.col}!`); // eslint-disable-line no-alert
 		}
 	},
 };

@@ -1,30 +1,24 @@
 import React, { Component } from 'react';
+// import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Tile from './tile';
-import TileSlot from './tileSlot';
-import GridSquare from './GridSquare';
-import { shuffle, pouch } from '../utils/index';
-import { bankTiles } from '../utils/game';
 
-export default class Bank extends Component {
-  constructor() {
-    super();
-    // this.shuffleChildren = this.shuffleChildren.bind(this);
+import { updateBank } from '../store';
+import { connect } from 'react-redux';
+
+import { shuffle } from '../utils/index';
+
+import Tile from './tile';
+import GridSquare from './GridSquare';
+
+class Bank extends Component {
+  constructor(props) {
+    super(props);
+    this.renderTile = this.renderTile.bind(this);
+    this.renderTileSlot = this.renderTileSlot.bind(this);
   }
 
-
-  // shuffleChildren(){
-  //   this.setState({ columns: shuffle(this.state.columns) });
-  // }
-
-  // componentDidMount(){
-  //   this.setState({ columns:  });
-  // }
-  // < button type = "button" id = "reshuffle-button" onClick = { this.shuffleChildren } > Reshuffle</button>
-
   renderTileSlot(col) {
-    const row = 99;
-
+    const row = 99; // we are using 99 as an indicator of the Bank
     return (
       <div key={col}>
         <GridSquare row={row} col={col}>
@@ -35,8 +29,20 @@ export default class Bank extends Component {
   }
 
   renderTile(row, col) {
-    let bank = this.props.tilePositions.bank;
-    return bank[col] ? <Tile letter={bank[col]} row={row} col={col} /> : null;
+    let { bank } = this.props;
+    let tile = bank.find(function (ele) {
+      return ele.col === col
+    });
+    // return bank[col] ? <Tile letter={bank[col]} row={row} col={col} /> : null;
+    // return (letter) ? <Tile letter={letter} row={99} col={col} /> : null;
+    if (tile) {
+      return (
+        <Tile letter={tile.letter} row={99} col={col} />
+      )
+    }
+    else {
+      return null
+    }
   }
 
   render() {
@@ -58,12 +64,32 @@ export default class Bank extends Component {
             </tr>
           </tbody>
         </table>
+        <button
+          type="button"
+          id="reshuffle-button"
+          onClick={() => {
+            this.props.shuffleBank(this.props.bank)
+          }}>
+          Reshuffle
+        </button>
       </div>
     );
   }
 }
 
-
 Bank.propTypes = {
-  tilePositions: PropTypes.object,
+  bank: PropTypes.array,
 }
+
+const mapState = state => ({
+  bank: state.bank,
+})
+
+const mapDispatch = dispatch => ({
+  shuffleBank(bank) {
+    let shuffledBank = shuffle(bank)
+    dispatch(updateBank(shuffledBank))
+  }
+})
+
+export default /*withRouter(*/connect(mapState, mapDispatch)(Bank);

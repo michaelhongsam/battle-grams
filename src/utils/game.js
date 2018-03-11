@@ -5,7 +5,7 @@ const bankTiles = [];
 for (let i = 0; i < 10; i++) {
   bankTiles.push(shuffledPouch.pop());
 }
-console.log('bankTiles: ', bankTiles);
+// console.log('bankTiles: ', bankTiles);
 
 let initialGrid = [];
 for (let i = 0; i < 64; i++){

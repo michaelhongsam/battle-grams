@@ -1,11 +1,45 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+
 import { DropTarget } from 'react-dnd'
-import TileSlot from './tileSlot'
-
-
-import { moveTile } from '../utils/game'
 import ItemTypes from './ItemTypes'
+
+import TileSlot from './tileSlot'
+import store, { updateGrid, updateBank } from '../store';
+
+function moveTile (source, target) {
+
+  let modifiedBank = store.getState().bank;
+  let modifiedGrid = store.getState().grid;
+
+  // add tile
+  if (target.row === 99) { // target going into bank
+    modifiedBank[target.col] = target.letter;
+  }
+  else // target goes into grid
+  {
+    let gridIdx = modifiedGrid.findIndex( ele => {
+      return ele.row === target.row && ele.col === target.col;
+    })
+    modifiedGrid[gridIdx] = { letter: source.letter, row: target.row, col: target.col };
+  }
+
+  // remove tile
+  if (source.row === 99) { // remove source from bank
+    modifiedBank[source.col] = null;
+  }
+  else { // remove source from grid
+    let gridIdx = modifiedGrid.findIndex( ele => {
+      return ele.row === source.row && ele.col === source.col;
+    })
+    modifiedGrid[gridIdx] = { letter: null, row: source.row, col: source.col };
+	}
+	console.log('modifiedGrid: ', modifiedGrid)
+	console.log('modifiedBarn: ', modifiedBank)
+
+	store.dispatch(updateGrid(modifiedGrid));
+	store.dispatch(updateBank(modifiedBank));
+}
 
 const squareTarget = {
 	drop(props, monitor) {
@@ -19,48 +53,23 @@ const squareTarget = {
 	},
 }
 
-function collect(connect, monitor) {
+function collect(connect) {
 	return {
 		connectDropTarget: connect.dropTarget(),
-		// isOver: monitor.isOver(),
 	}
 }
 
 class GridSquare extends Component {
 	static propTypes = {
-		col: PropTypes.number.isRequired,
-		row: PropTypes.number.isRequired,
 		connectDropTarget: PropTypes.func.isRequired,
 		children: PropTypes.node,
 	}
 
-	// renderOverlay(color) {
-	// 	return (
-	// 		<div
-	// 			style={{
-	// 				position: 'absolute',
-	// 				top: 0,
-	// 				left: 0,
-	// 				height: '100%',
-	// 				width: '100%',
-	// 				zIndex: 1,
-	// 				opacity: 0.5,
-	// 				backgroundColor: color,
-	// 			}}
-	// 		/>
-	// 	)
-	// }
-
 	render() {
-		const { col, row, connectDropTarget, children } = this.props
+		const { connectDropTarget, children } = this.props
 
 		return connectDropTarget(
-			<div
-				style={{
-					position: 'relative',
-					width: '100%',
-					height: '100%',
-				}}>
+			<div>
 				<TileSlot>{children}</TileSlot>
 			</div>,
 		)

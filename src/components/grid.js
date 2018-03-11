@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
-import GridSquare from './GridSquare';
-import Tile from './tile';
-// import TileSlot from './tileSlot';
-
+// import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+// import { updateGrid } from '../store';
+import {connect} from 'react-redux';
 
-export default class Grid extends Component {
+import Tile from './tile';
+import GridSquare from './GridSquare';
+
+
+class Grid extends Component {
   constructor(props) {
     super(props);
-    this.state = { size: 8, totalSize: 64 };
+
+    this.state = {
+      size: 8,
+    }
     this.renderTile = this.renderTile.bind(this);
     this.renderTileSlot = this.renderTileSlot.bind(this);
   }
+
 
   renderTileSlot(row, col) {
     return (
@@ -25,11 +32,19 @@ export default class Grid extends Component {
   }
 
   renderTile(row, col) {
-    let grid = this.props.tilePositions.grid;
-    let { letter } = grid.filter(tile => {
-      return row === tile.row && col === tile.col;
+    let { grid } = this.props;
+    let tile = grid.find(function (ele){
+      return (row === ele.row && col === ele.col);
     });
-    return letter ? <Tile letter={letter} row={row} col={col} /> : null;
+    // return (letter) ? <Tile letter={letter} row={row} col={col} /> : null;
+    if (tile) {
+      return (
+        <Tile letter={tile.letter} row={row} col={col} />
+      )
+    }
+    else {
+      return null
+    }
   }
 
 
@@ -79,5 +94,16 @@ export default class Grid extends Component {
 }
 
 Grid.propTypes = {
-  tilePositions: PropTypes.object,
+  grid: PropTypes.array,
 }
+
+const mapState = state => ({
+  grid: state.grid
+})
+
+const mapDispatch = null;
+// const mapDispatch = dispatch => ({
+//   somefunc: thing => dispatch(somefunc(thing))
+// })
+
+export default /*withRouter(*/connect(mapState, mapDispatch)(Grid);

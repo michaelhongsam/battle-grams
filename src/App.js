@@ -5,32 +5,57 @@ import Bank from './components/bank';
 import Footer from './components/footer';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
-import { observe } from './utils/game';
+// import { observe } from './utils/game';
+
+import store, { updateGrid, updateBank } from './store';
+
+import { shuffle, pouch } from './utils';
 
 import './App.css';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.unobserve = observe(this.handleChange.bind(this));
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.unobserve = observe(this.handleChange.bind(this));
+  // }
 
-  handleChange(tilePositions) {
-    console.log('handleChange', tilePositions)
-    const nextState = { tilePositions };
-    if (this.state) {
-      this.setState(nextState);
-    } else {
-      this.state = nextState;
+  componentDidMount() {
+    let initialGrid = [];
+    for (let i = 0; i < 64; i++){
+        const col = i % 8;
+        const row = Math.floor(i / 8)
+        initialGrid.push({col: col, row: row, letter: null})
     }
+    store.dispatch(updateGrid(initialGrid))
+
+    let shuffledPouch = shuffle(pouch);
+    const initialBank = [];
+    for (let i = 0; i < 10; i++) {
+      initialBank.push({
+        letter: shuffledPouch.pop(),
+        col: i,
+        row: 99,
+      })
+    }
+    store.dispatch(updateBank(initialBank))
   }
 
-  componentWillMount() {
-    this.unobserve();
-  }
+  // handleChange(tilePositions) {
+  //   console.log('handleChange', tilePositions)
+  //   const nextState = { tilePositions };
+  //   if (this.state) {
+  //     this.setState(nextState);
+  //   } else {
+  //     this.state = nextState;
+  //   }
+  // // }
+
+  // componentWillMount() {
+  //   this.unobserve();
+  // }
 
   render () {
-    const { tilePositions } = this.state;
+    // const { tilePositions } = this.state;
     return (
       <DragDropContextProvider backend={HTML5Backend}>
       <div className="App">
@@ -38,13 +63,22 @@ class App extends React.Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to BATTLE-GRAMS</h1>
         </header>
-        <Grid tilePositions={tilePositions} />
-        <Bank tilePositions={tilePositions} />
+        {
+          // <Grid tilePositions={tilePositions} />
+          // <Bank tilePositions={tilePositions} />
+        }
+        <Grid />
+        <Bank />
         <Footer />
       </div>
       </DragDropContextProvider>
     );
   }
 }
+
+// const mapState = state => ({
+//   grid: state.grid,
+//   bank: state.bank,
+// })
 
 export default App;

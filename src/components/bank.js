@@ -1,50 +1,62 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Tile from './tile';
 import TileSlot from './tileSlot';
-import { shuffle, pouch } from '../utils';
-// import bank from './game'
+import { shuffle, pouch } from '../utils/index';
+import { bankTiles } from '../utils/game';
 
 export default class Bank extends Component {
   constructor() {
     super();
-    this.state = {
-      size: 10,
-      columns: [],
-    };
-    this.shuffledPouch = shuffle(pouch);
-    this.currentTiles = [];
-    for (let i = 0; i < this.state.size; i++) {
-      let cellID = `${i}`;
-      this.currentTiles.push(
-        <td key={cellID} id={cellID}>
-          <TileSlot>
-            <Tile key={cellID} letter={this.shuffledPouch.pop()} />
-          </TileSlot>
-        </td>);
-    }
-    this.shuffleChildren = this.shuffleChildren.bind(this);
+    // this.shuffleChildren = this.shuffleChildren.bind(this);
   }
 
-  shuffleChildren(){
-    this.setState({ columns: shuffle(this.state.columns) });
+  static propTypes = {
+    tilePositions: PropTypes.object().isRequired
   }
 
-  componentDidMount(){
-    this.setState({ columns: this.currentTiles });
+  // shuffleChildren(){
+  //   this.setState({ columns: shuffle(this.state.columns) });
+  // }
+
+  // componentDidMount(){
+  //   this.setState({ columns:  });
+  // }
+  // < button type = "button" id = "reshuffle-button" onClick = { this.shuffleChildren } > Reshuffle</button>
+
+  renderTileSlot(i) {
+    const col = i % 10;
+    const row = 9;
+
+    return (
+      <div key={i}>
+        <GridSquare row={row} col={col}>
+          {this.renderTile(i)}
+        </GridSquare>
+      </div>
+    )
+  }
+
+  renderTile(i) {
+    let bank = this.props.tilePositions.bank;
+    return bank[i] ? <Tile letter={bank[i]} /> : null;
   }
 
   render() {
+    const slots = [];
+    for (let i = 0; i < 10; ++i) {
+      slots.push(this.renderTileSlot(i))
+    }
 
     return (
       <div className="container">
         <table id="letter-bank">
           <tbody>
             <tr>
-              {this.state.columns}
+              {slots}
             </tr>
           </tbody>
         </table>
-        <button type="button" id="reshuffle-button" onClick={this.shuffleChildren}>Reshuffle</button>
       </div>
     );
   }

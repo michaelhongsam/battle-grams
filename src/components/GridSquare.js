@@ -55,10 +55,8 @@ class GridSquare extends Component {
 					position: 'relative',
 					width: '100%',
 					height: '100%',
-				}}
-			>
+				}}>
 				<TileSlot>{children}</TileSlot>
-
 			</div>,
 		)
 	}

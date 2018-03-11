@@ -14,9 +14,8 @@ export default class Grid extends Component {
   }
 
   static propTypes = {
-    arrTilePositions:
-      PropTypes.arrayOf(
-        PropTypes.object.isRequired)
+    tilePositions:
+      PropTypes.object()
         .isRequired,
   }
 
@@ -34,12 +33,11 @@ export default class Grid extends Component {
   }
 
   renderTile(row, col) {
-    const { tileRow, tileCol, letter } = this.props.arrTilePositions.filter(tilePos => tilePos.row === row && tilePos.col === col);
-
-    const isTileHere = row === tileRow && col === tileCol;
-
-    return isTileHere ? <Tile letter={letter} /> : null
-
+    let grid = this.props.tilePositions.grid;
+    let { letter } = grid.filter(tile => {
+      return row === tile.row && col === tile.col;
+    });
+    return letter ? <Tile letter={letter} /> : null;
   }
 
 
@@ -55,7 +53,6 @@ export default class Grid extends Component {
         {slots}
       </table>
     </div>
-  )
-  }
+  )}
 }
 

@@ -22,8 +22,7 @@ export default class Bank extends Component {
   // }
   // < button type = "button" id = "reshuffle-button" onClick = { this.shuffleChildren } > Reshuffle</button>
 
-  renderTileSlot(i) {
-    const col = i;
+  renderTileSlot(col) {
     const row = 99;
 
     return (
@@ -42,8 +41,12 @@ export default class Bank extends Component {
 
   render() {
     const slots = [];
-    for (let i = 0; i < 10; ++i) {
-      slots.push(this.renderTileSlot(i))
+    for (let col = 0; col < 10; ++col) {
+      slots.push(
+        <td key={col} id={col}>
+          {this.renderTileSlot(col)}
+        </td>
+      )
     }
 
     return (

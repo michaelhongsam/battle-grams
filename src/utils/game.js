@@ -43,6 +43,8 @@ export function moveTile(source, target) {
   let modifiedBank = tilePositions.bank;
   let modifiedGrid = tilePositions.grid
 
+
+  // add tile
   if (target.row === 99) { // target going into bank
     modifiedBank[target.col] = target.letter;
   }
@@ -54,10 +56,11 @@ export function moveTile(source, target) {
     modifiedGrid[gridIdx] = { letter: source.letter, row: target.row, col: target.col };
   }
 
-  if (source.row === 99) {
-    modifiedBank[target.col] = null;
+  // remove tile
+  if (source.row === 99) { // remove source from bank
+    modifiedBank[source.col] = null;
   }
-  else {
+  else { // remove source from grid
     let gridIdx = modifiedGrid.findIndex( ele => {
       return ele.row === source.row && ele.col === source.col;
     })

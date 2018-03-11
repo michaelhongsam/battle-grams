@@ -50,18 +50,18 @@ function Grid (props) {
   // render() {
     const columns = [];
     let head = [<th key="spacer" />];
-    for (let col = 0; col < 8; ++col) {
-      let columnID = `col ${col}`;
+    for (let row = 0; row < 8; ++row) {
+      let columnID = `col ${row}`;
       let cell = [
-        <td key={`row ${col}`}>
-          <span>{`row ${col}`}</span>
+        <td key={`row ${row}`}>
+          <span>{`row ${row}`}</span>
         </td>];
       head.push(
         <th key={columnID} id={columnID}>
           {columnID}
         </th>);
 
-      for (let row = 0; row < 8; ++row) {
+      for (let col = 0; col < 8; ++col) {
         let cellID = `row ${row} - col ${col}`;
         cell.push(
           <td key={cellID} id={cellID}>
@@ -69,7 +69,7 @@ function Grid (props) {
           </td>);
       }
       columns.push(
-        <tr key={col} id={columnID}>
+        <tr key={row} id={columnID}>
           {cell}
         </tr>
       );

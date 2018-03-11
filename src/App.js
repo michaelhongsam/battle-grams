@@ -24,7 +24,7 @@ class App extends React.Component {
     for (let i = 0; i < 64; i++){
         const col = i % 8;
         const row = Math.floor(i / 8)
-        initialGrid.push({col: col, row: row, letter: null})
+        initialGrid.push({row: row, col: col, letter: null, status: 'na'})
     }
     store.dispatch(updateGrid(initialGrid))
 
@@ -35,6 +35,7 @@ class App extends React.Component {
         letter: shuffledPouch.pop(),
         col: i,
         row: 99,
+        status: 'na',
       })
     }
     store.dispatch(updateBank(initialBank))
@@ -60,7 +61,9 @@ class App extends React.Component {
       <DragDropContextProvider backend={HTML5Backend}>
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          {
+            // <img src={logo} className="App-logo" alt="logo" />
+          }
           <h1 className="App-title">Welcome to BATTLE-GRAMS</h1>
         </header>
         {

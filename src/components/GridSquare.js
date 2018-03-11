@@ -4,12 +4,13 @@ import { DropTarget } from 'react-dnd'
 import TileSlot from './tileSlot'
 
 
-import { moveTile } from './game'
+import { moveTile } from '../utils/game'
 import ItemTypes from './ItemTypes'
 
 const squareTarget = {
 	drop(props, monitor) {
-    // let item = monitor.getItem();
+		// let item = monitor.getItem();
+		console.log(props)
 		moveTile(props.col, props.row)
 	},
 }

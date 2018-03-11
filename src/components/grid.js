@@ -13,12 +13,6 @@ export default class Grid extends Component {
     this.renderTileSlot = this.renderTileSlot.bind(this);
   }
 
-  static propTypes = {
-    tilePositions:
-      PropTypes.object()
-        .isRequired,
-  }
-
   renderTileSlot(i) {
     const col = i % this.state.size;
     const row = Math.floor(i / this.state.size)
@@ -47,7 +41,7 @@ export default class Grid extends Component {
       slots.push(this.renderTileSlot(i))
     }
 
-  return(
+  return (
     <div className = "container" >
       <table id="grid">
         {slots}
@@ -56,3 +50,6 @@ export default class Grid extends Component {
   )}
 }
 
+Grid.propTypes = {
+  tilePositions: PropTypes.object,
+}

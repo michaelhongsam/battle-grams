@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Tile from './tile';
 import TileSlot from './tileSlot';
+import GridSquare from './GridSquare';
 import { shuffle, pouch } from '../utils/index';
 import { bankTiles } from '../utils/game';
 
@@ -11,9 +12,6 @@ export default class Bank extends Component {
     // this.shuffleChildren = this.shuffleChildren.bind(this);
   }
 
-  static propTypes = {
-    tilePositions: PropTypes.object().isRequired
-  }
 
   // shuffleChildren(){
   //   this.setState({ columns: shuffle(this.state.columns) });
@@ -60,4 +58,9 @@ export default class Bank extends Component {
       </div>
     );
   }
+}
+
+
+Bank.propTypes = {
+  tilePositions: PropTypes.object,
 }

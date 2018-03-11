@@ -7,8 +7,15 @@ for (let i = 0; i < 10; i++) {
 }
 console.log('bankTiles: ', bankTiles);
 
+let initialGrid = [];
+for (let i = 0; i < 64; i++){
+    const col = i % 8;
+    const row = Math.floor(i / 8)
+    initialGrid.push({col: col, row: row, letter: null})
+}
+
 let tilePositions = {
-  grid: [],
+  grid: initialGrid,
   bank: bankTiles
 };
 
@@ -36,15 +43,15 @@ export function moveTile(source, target) {
   let modifiedBank = tilePositions.bank;
   let modifiedGrid = tilePositions.grid
 
-  if (target.row === 99) {
+  if (target.row === 99) { // target going into bank
     modifiedBank[target.col] = target.letter;
   }
-  else
+  else // target goes into grid
   {
     let gridIdx = modifiedGrid.findIndex( ele => {
       return ele.row === target.row && ele.col === target.col;
     })
-    modifiedGrid[gridIdx] = { letter: target.letter, row: target.row, col: target.col };
+    modifiedGrid[gridIdx] = { letter: source.letter, row: target.row, col: target.col };
   }
 
   if (source.row === 99) {
@@ -56,6 +63,7 @@ export function moveTile(source, target) {
     })
     modifiedGrid[gridIdx] = { letter: null, row: source.row, col: source.col };
   }
+  
   tilePositions = {
     grid: modifiedGrid,
     bank: modifiedBank,

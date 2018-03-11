@@ -6,7 +6,6 @@ import Footer from './components/footer';
 import { DragDropContextProvider } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { observe } from './utils/game';
-import Tile from './components/tile';
 
 import './App.css';
 
@@ -17,6 +16,7 @@ class App extends React.Component {
   }
 
   handleChange(tilePositions) {
+    console.log('handleChange', tilePositions)
     const nextState = { tilePositions };
     if (this.state) {
       this.setState(nextState);

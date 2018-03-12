@@ -1,53 +1,54 @@
-import React /*, { Component }*/ from 'react';
-import { withRouter } from 'react-router-dom';
+import React , { Component } from 'react';
 import PropTypes from 'prop-types';
 
-// import { updateGrid } from '../store';
-import {connect} from 'react-redux';
+import store, { updateGrid } from '../store';
+import { connect } from 'react-redux';
 
 import Tile from './tile';
 import GridSquare from './GridSquare';
 
-function renderTileSlot(row, col, props) {
-  return (
-    <div key={`${row} - ${col}`}>
-      <GridSquare row={row} col={col}>
-        {renderTile(row, col, props)}
-      </GridSquare>
-    </div>
-  )
-}
-
-function renderTile(row, col, props) {
-  let { grid } = props;
-  let tile = grid.find(function (ele){
-    return (row === ele.row && col === ele.col);
-  });
-  // return (letter) ? <Tile letter={letter} row={row} col={col} /> : null;
-  if (tile && tile.letter) {
-    return (
-      <Tile letter={tile.letter} row={row} col={col} />
-    )
+class Grid extends Component {
+  constructor(props) {
+    super(props);
+    this.renderTileSlot = this.renderTileSlot.bind(this);
   }
-  else {
-    return null
+
+  componentDidMount () {
+      this.unsubscribeFromRedux = store.subscribe(() => {
+          this.setState({ grid: store.getState().grid })
+      })
+    }
+
+  componentWillUnmount () {
+    this.unsubscribeFromRedux()
   }
-}
-function Grid (props) {
-  // constructor(props) {
-  //   super(props);
 
-  //   this.state = {
-  //     size: 8,
-  //   }
-  //   this.renderTile = this.renderTile.bind(this);
-  //   this.renderTileSlot = this.renderTileSlot.bind(this);
-  // }
+  renderTileSlot(row, col, props) {
+    let indexNum = ((row*8)+col) % 64;
+  
+    let { grid } = props;
+    let tile = grid[indexNum];
+  
+    if (tile && tile.letter) {
+      console.log('hit in grid: ', tile.letter);
+      return (
+        <div key={`${row} - ${col}`}>
+          <GridSquare row={row} col={col} letter={tile.letter}>
+            <Tile row={row} col={col} letter={tile.letter} />
+          </GridSquare>
+        </div>
+      )
+    } else {
+      // console.log('hit else: ');
+      return (
+        <div key={`${row} - ${col}`}>
+          <GridSquare row={row} col={col} letter={null} />
+        </div>
+      )
+    }
+  }
 
-
-
-
-  // render() {
+  render() {
     const columns = [];
     let head = [<th key="spacer" />];
     for (let col = 0; col < 8; ++col) {
@@ -56,6 +57,9 @@ function Grid (props) {
         <td key={`row ${col}`}>
           <span>{`row ${col}`}</span>
         </td>];
+      
+      // let cell = [];
+
       head.push(
         <th key={columnID} id={columnID}>
           {columnID}
@@ -63,9 +67,10 @@ function Grid (props) {
 
       for (let row = 0; row < 8; ++row) {
         let cellID = `row ${row} - col ${col}`;
+
         cell.push(
           <td key={cellID} id={cellID}>
-            {renderTileSlot(row, col, props)}
+            {this.renderTileSlot(row, col, this.props)}
           </td>);
       }
       columns.push(
@@ -90,19 +95,19 @@ function Grid (props) {
       </div>
     )
   }
-// }
+}
 
 Grid.propTypes = {
   grid: PropTypes.array,
 }
 
-const mapState = state => ({
-  grid: state.grid
-})
+const mapState = ({ grid }) => ({ grid })
 
 const mapDispatch = null;
 // const mapDispatch = dispatch => ({
-//   somefunc: thing => dispatch(somefunc(thing))
+//   viewGrid(grid) {
+//     dispatch(updateGrid(grid))
+//   }
 // })
 
-export default withRouter(connect(mapState, mapDispatch)(Grid));
+export default connect(mapState, mapDispatch)(Grid);

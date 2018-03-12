@@ -14,17 +14,13 @@ import { shuffle, pouch } from './utils';
 import './App.css';
 
 class App extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.unobserve = observe(this.handleChange.bind(this));
-  // }
 
   componentDidMount() {
     let initialGrid = [];
     for (let i = 0; i < 64; i++){
         const col = i % 8;
         const row = Math.floor(i / 8)
-        initialGrid.push({col: col, row: row, letter: null})
+        initialGrid.push({col: col, row: row, letter: null })
     }
     store.dispatch(updateGrid(initialGrid))
 
@@ -32,30 +28,16 @@ class App extends React.Component {
     const initialBank = [];
     for (let i = 0; i < 10; i++) {
       initialBank.push({
-        letter: shuffledPouch.pop(),
         col: i,
         row: 99,
+        letter: shuffledPouch.pop()
       })
     }
     store.dispatch(updateBank(initialBank))
   }
 
-  // handleChange(tilePositions) {
-  //   console.log('handleChange', tilePositions)
-  //   const nextState = { tilePositions };
-  //   if (this.state) {
-  //     this.setState(nextState);
-  //   } else {
-  //     this.state = nextState;
-  //   }
-  // // }
-
-  // componentWillMount() {
-  //   this.unobserve();
-  // }
-
   render () {
-    // const { tilePositions } = this.state;
+
     return (
       <DragDropContextProvider backend={HTML5Backend}>
       <div className="App">
@@ -63,10 +45,6 @@ class App extends React.Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to BATTLE-GRAMS</h1>
         </header>
-        {
-          // <Grid grid={this.props.grid} />
-          // <Bank bank={this.props.bank} />
-        }
         <Grid />
         <Bank />
         <Footer />
@@ -76,13 +54,5 @@ class App extends React.Component {
   }
 }
 
-// const mapState = state => ({
-//   grid: state.grid,
-//   bank: state.bank,
-// })
-
-// const mapDispatch = null;
-
-// export default connect(mapState, mapDispatch)(App);
 export default App;
 

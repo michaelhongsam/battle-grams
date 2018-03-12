@@ -1,55 +1,55 @@
-import React /*, { Component }*/ from 'react';
-import { withRouter } from 'react-router-dom';
+import React , { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { updateBank } from '../store';
+import store, { updateBank } from '../store';
 import { connect } from 'react-redux';
-
 import { shuffle } from '../utils/index';
 
 import Tile from './tile';
 import GridSquare from './GridSquare';
 
-function renderTileSlot(col, props) {
-  const row = 99; // we are using 99 as an indicator of the Bank
-  return (
-    <div key={col}>
-      <GridSquare row={row} col={col}>
-        {renderTile(row, col, props)}
-      </GridSquare>
-    </div>
-  )
-}
-
-function renderTile(row, col, props) {
-  let { bank } = props;
-  let tile = bank[col];
-  // return bank[col] ? <Tile letter={bank[col]} row={row} col={col} /> : null;
-  // return (letter) ? <Tile letter={letter} row={99} col={col} /> : null;
-  if (tile && tile.letter) {
-    return (
-      <Tile letter={tile.letter} row={99} col={col} />
-    )
+class Bank extends Component {
+  constructor(props) {
+    super(props)
+    this.renderTileSlot = this.renderTileSlot.bind(this);
   }
-  else {
-    return null
+
+  componentDidMount () {
+    this.unsubscribeFromRedux = store.subscribe(() => {
+        this.setState({ bank: store.getState().bank })
+    })
   }
-}
 
-function Bank (props) {
-  // constructor(props) {
-  //   super(props);
-  //   this.renderTile = this.renderTile.bind(this);
-  //   this.renderTileSlot = this.renderTileSlot.bind(this);
-  // }
+  componentWillUnmount () {
+    this.unsubscribeFromRedux()
+  }
 
+  renderTileSlot(col, props) {
+    const row = 99; // we are using 99 as an indicator of the Bank
+    let { bank } = props;
+    let tile = bank[col];
+  
+    if (tile && tile.letter) {
+      return (
+        <div key={col}>
+          <GridSquare row={row} col={col} letter={tile.letter}>
+            <Tile row={row} col={col} letter={tile.letter} />
+          </GridSquare>
+        </div>
+    )} else {
+      return (
+        <div key={col}>
+          <GridSquare row={row} col={col} letter={null} />
+        </div>
+      )}
+  }
 
-  // render() {
+  render() {
     const slots = [];
     for (let col = 0; col < 10; ++col) {
       slots.push(
         <td key={col} id={col}>
-          {renderTileSlot(col, props)}
+          {this.renderTileSlot(col, this.props)}
         </td>
       )
     }
@@ -66,23 +66,23 @@ function Bank (props) {
         <button
           type="button"
           id="reshuffle-button"
-          onClick={() => {
-            props.shuffleBank(props.bank)
+          onClick={(e) => {
+            e.preventDefault()
+            this.props.shuffleBank(this.props.bank)
           }}>
           Reshuffle
         </button>
       </div>
     );
   }
-// }
+    
+  }
 
 Bank.propTypes = {
   bank: PropTypes.array,
 }
 
-const mapState = state => ({
-  bank: state.bank,
-})
+const mapState = ({ bank }) => ({ bank })
 
 const mapDispatch = dispatch => ({
   shuffleBank(bank) {
@@ -91,4 +91,4 @@ const mapDispatch = dispatch => ({
   }
 })
 
-export default withRouter(connect(mapState, mapDispatch)(Bank));
+export default connect(mapState, mapDispatch)(Bank);

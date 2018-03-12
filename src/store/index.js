@@ -32,6 +32,7 @@ export function updateGrid(grid) {
 // REDUCER
 
 function reducer(state = initialState, action) {
+  console.log('state: ', state);
   switch (action.type) {
     case UPDATE_GRID:
       return (
@@ -41,6 +42,7 @@ function reducer(state = initialState, action) {
           { grid: action.grid }
         )
       )
+
     case UPDATE_BANK:
       return (
         Object.assign(
@@ -49,16 +51,10 @@ function reducer(state = initialState, action) {
           { bank: action.bank }
         )
       )
+
     default: return state
   }
 }
-
-// const middleware = composeWithDevTools(applyMiddleware(
-//   thunkMiddleware,
-//   createLogger({ collapsed: true })
-// ))
-// const store = createStore(reducer, middleware)
-
 
 const store = createStore(
   reducer,
@@ -68,4 +64,3 @@ const store = createStore(
   )
 )
 export default store
-

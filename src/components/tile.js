@@ -9,16 +9,16 @@ const propTypes = {
 };
 
 const style = {
-  'borderStyle': 'solid',
+  borderStyle: 'solid',
   width: '60px',
   height: '60px',
-  'borderRadius': '5px',
-  'marginLeft': 'auto',
-  'marginRight': 'auto',
+  borderRadius: '5px',
+  marginLeft: 'auto',
+  marginRight: 'auto',
   display: 'flex',
-  'justifyContent': 'center',
-  'alignItems': 'center',
-  'backgroundColor': '#fff199'
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: '#fff199'
 }
 
 const tileSource = {
@@ -29,12 +29,12 @@ const tileSource = {
       col: props.col,
 		};
 	},
-  
+
 	endDrag(props, monitor) {
     const item = monitor.getItem();
     const dropResult = monitor.getDropResult();
 		if (dropResult) {
-			alert(`You dropped ${item.letter} into row ${dropResult.row} - column ${dropResult.col}!`); // eslint-disable-line no-alert
+			// alert(`You dropped ${item.letter} into row ${dropResult.row} - column ${dropResult.col}!`); // eslint-disable-line no-alert
 		}
 	},
 };

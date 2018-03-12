@@ -1,8 +1,9 @@
-import React /*, { Component }*/ from 'react';
+import React , { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import store, {updateBank} from '../store';
 
-import { updateBank } from '../store';
+// import { updateBank } from '../store';
 import { connect } from 'react-redux';
 
 import { shuffle } from '../utils/index';
@@ -36,20 +37,31 @@ function renderTile(row, col, props) {
   }
 }
 
-function Bank (props) {
-  // constructor(props) {
-  //   super(props);
-  //   this.renderTile = this.renderTile.bind(this);
-  //   this.renderTileSlot = this.renderTileSlot.bind(this);
-  // }
+class Bank extends Component {
+  constructor(props) {
+    super(props);
+ 
+  }
+
+  componentDidMount () {
+		this.unsubscribeFromRedux = store.subscribe(() => { // VANILLA REDUX
+			this.setState({
+				bank: store.getState().bank // VANILLA REDUX
+			})
+		})
+	}
+
+	componentWillUnmount () {
+		this.unsubscribeFromRedux() // VANILLA REDUX
+	}
 
 
-  // render() {
+  render() {
     const slots = [];
     for (let col = 0; col < 10; ++col) {
       slots.push(
         <td key={col} id={col}>
-          {renderTileSlot(col, props)}
+          {renderTileSlot(col, this.props)}
         </td>
       )
     }
@@ -67,14 +79,14 @@ function Bank (props) {
           type="button"
           id="reshuffle-button"
           onClick={() => {
-            props.shuffleBank(props.bank)
+            this.props.shuffleBank(this.props.bank)
           }}>
           Reshuffle
         </button>
       </div>
     );
   }
-// }
+}
 
 Bank.propTypes = {
   bank: PropTypes.array,

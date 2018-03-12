@@ -16,6 +16,7 @@ const squareTarget = {
 		}
 		console.log('source: ', source, 'target: ', target)
 		moveTile(source, target)
+
 		return {
 			row: target.row,
 			col: target.col,
@@ -48,3 +49,4 @@ class GridSquare extends Component {
 }
 
 export default DropTarget(ItemTypes.TILE, squareTarget, collect)(GridSquare);
+

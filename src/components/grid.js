@@ -1,6 +1,8 @@
-import React /*, { Component }*/ from 'react';
+import React , { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import store from '../store';
+
 
 // import { updateGrid } from '../store';
 import {connect} from 'react-redux';
@@ -33,21 +35,28 @@ function renderTile(row, col, props) {
     return null
   }
 }
-function Grid (props) {
-  // constructor(props) {
-  //   super(props);
+class Grid extends Component {
+  constructor(props) {
+    super(props);
 
-  //   this.state = {
-  //     size: 8,
-  //   }
-  //   this.renderTile = this.renderTile.bind(this);
-  //   this.renderTileSlot = this.renderTileSlot.bind(this);
-  // }
+  }
+
+  componentDidMount () {
+		this.unsubscribeFromRedux = store.subscribe(() => { // VANILLA REDUX
+			this.setState({
+				grid: store.getState().grid // VANILLA REDUX
+			})
+		})
+	}
+
+	componentWillUnmount () {
+		this.unsubscribeFromRedux() // VANILLA REDUX
+	}
 
 
 
 
-  // render() {
+  render() {
     const columns = [];
     let head = [<th key="spacer" />];
     for (let row = 0; row < 8; ++row) {
@@ -65,7 +74,7 @@ function Grid (props) {
         let cellID = `row ${row} - col ${col}`;
         cell.push(
           <td key={cellID} id={cellID}>
-            {renderTileSlot(row, col, props)}
+            {renderTileSlot(row, col, this.props)}
           </td>);
       }
       columns.push(
@@ -90,7 +99,7 @@ function Grid (props) {
       </div>
     )
   }
-// }
+}
 
 Grid.propTypes = {
   grid: PropTypes.array,

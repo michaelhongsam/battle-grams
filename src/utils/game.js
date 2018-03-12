@@ -1,4 +1,6 @@
 import store, { updateGrid, updateBank } from '../store';
+import { connect } from 'react-redux';
+
 import axios from 'axios';
 // http://www.anagramica.com/lookup/{a word goes here}
 
@@ -14,7 +16,8 @@ function calculateValidRow(row){
     }
   }
   console.log('row word is: ', word)
-  axios.get(`http://www.anagramica.com/lookup/cat`)
+
+  axios.get(`http://www.anagramica.com/lookup/${word}`)
   .then(res => res.data)
   .then(data => console.log('row res ', data))
 }
@@ -30,7 +33,7 @@ function calculateValidCol(col){
     }
   }
   console.log('col word is: ', word)
-  axios.get(`http://www.anagramica.com/lookup/dog`)
+  axios.get(`http://www.anagramica.com/lookup/${word}`)
   .then(res => res.data)
   .then(data => console.log('col res ', data))
 }
@@ -54,17 +57,18 @@ export function moveTile (source, target) {
 
   // remove tile
   if (source.row === 99) { // remove source from bank
-    modifiedBank[source.col] = null;
+    modifiedBank[source.col] = target.letter;
   }
   else { // remove source from grid
     let gridIdx = modifiedGrid.findIndex( ele => {
       return ele.row === source.row && ele.col === source.col;
     })
-    modifiedGrid[gridIdx] = { row: source.row, col: source.col, letter: null };
+    modifiedGrid[gridIdx] = { row: source.row, col: source.col, letter: target.letter };
 	}
 	console.log('modifiedGrid: ', modifiedGrid)
   console.log('modifiedBank: ', modifiedBank)
 
+  console.log(' install a CORS override extension: https://chrome.google.com/webstore/detail/cors-toggle/jioikioepegflmdnbocfhgmpmopmjkim')
   calculateValidRow(target.row);
   calculateValidCol(target.col);
 

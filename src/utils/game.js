@@ -1,75 +1,104 @@
-import { shuffle, pouch } from './index';
+import store, { updateGrid, updateBank } from '../store';
+// const wordList = require('word-list-json');
+const wordObj = require('word-list-json').reduce((words, word) => {words[word] = true; return words}, {})
 
-let shuffledPouch = shuffle(pouch);
-const bankTiles = [];
-for (let i = 0; i < 10; i++) {
-  bankTiles.push(shuffledPouch.pop());
+function calculateValidRow(row){
+  let modifiedGrid = store.getState().grid;
+  let word = '';
+  for (let i = 0; i < 8; i++){
+    if (modifiedGrid[ 8 * row + i ].letter === null){
+      word += '';
+    }
+    else {
+      word += modifiedGrid[ 8 * row + i ].letter;
+    }
+  }
+	console.log('row word: ', word, 'isValid: ', wordObj[word.toLowerCase()])
+	if ( wordObj[word.toLowerCase()] ) {
+		return word;
+	}
 }
-// console.log('bankTiles: ', bankTiles);
-
-let initialGrid = [];
-for (let i = 0; i < 64; i++){
-    const col = i % 8;
-    const row = Math.floor(i / 8)
-    initialGrid.push({col: col, row: row, letter: null})
+function calculateValidCol(col){
+  let modifiedGrid = store.getState().grid;
+  let word = '';
+  for (let i = 0; i < 8; i++){
+    if (modifiedGrid[ 8 * i + col ].letter === null){
+      word += '';
+    }
+    else {
+      word += modifiedGrid[ 8 * i + col ].letter;
+    }
+  }
+	console.log('col word: ', word, 'isValid: ', wordObj[word.toLowerCase()])
+	if ( wordObj[word.toLowerCase()] ) {
+		return word;
+	}
 }
 
-let tilePositions = {
-  grid: initialGrid,
-  bank: bankTiles
-};
+export function moveTile (source, target) {
+	console.log('target: ', target);
+	console.log('source: ', source);
 
-let observer = null;
+  let modifiedBank = store.getState().bank;
+  let modifiedGrid = store.getState().grid;
 
-function emitChange() {
-	observer(tilePositions);
-}
+	// add tile
+	if (target && target.row === 99 && source.row === 99) { // source is from bank, target is in bank
+		console.log('bank to bank')
 
-export function observe(obj) {
-	if (observer) {
-		throw new Error('Multiple observers not implemented.');
+		if (target.letter) {
+			modifiedBank[source.col] = target;
+		} else {
+			modifiedBank[source.col] = null;
+		}
+		modifiedBank[target.col] = source;
+		
+		store.dispatch(updateBank(modifiedBank));
+
+	} else if (target && target.row !== 99 && source.row === 99) { // source is from bank, target is in grid
+		console.log('bank to grid')
+		let gridIdx = modifiedGrid.findIndex( ele => {
+      		return ele.row === target.row && ele.col === target.col;
+		})
+		modifiedGrid[gridIdx].letter = source.letter;
+
+		if (target.letter) {
+			modifiedBank[source.col] = target;
+		} else {
+			modifiedBank[source.col] = null;
+		}
+		store.dispatch(updateGrid(modifiedGrid));
+		store.dispatch(updateBank(modifiedBank));
+
+  	} else if (target && target.row !== 99 && source.row !== 99) {
+		console.log('grid to grid')
+		let gridIdxTarget = modifiedGrid.findIndex( ele => {
+			return ele.row === target.row && ele.col === target.col;
+		})
+		let gridIdxSource = modifiedGrid.findIndex( ele => {
+			return ele.row === source.row && ele.col === source.col;
+		})
+
+		modifiedGrid[gridIdxTarget].letter = source.letter;
+		modifiedGrid[gridIdxSource].letter = target.letter;
+		store.dispatch(updateGrid(modifiedGrid));
+
+	} else {
+		console.log('grid to bank')
+		let fromGridIdx = modifiedGrid.findIndex( ele => {
+			return ele.row === source.row && ele.col === source.col;
+		})
+		modifiedGrid[fromGridIdx].letter = target.letter;
+		modifiedBank[target.col] = source;
+		store.dispatch(updateGrid(modifiedGrid));
+		store.dispatch(updateBank(modifiedBank));
+  }
+ 
+	if ( (target.row !== 99 ) &&	calculateValidRow(target.row)	) {
+		alert ( `This word: ${calculateValidRow(target.row)} is a valid word!` );
+	}
+	if ( calculateValidCol(target.col) ) {
+		alert ( `This word: ${calculateValidCol(target.col)} is a valid word!` );
 	}
 
-	observer = obj;
-	emitChange();
-
-	return () => {
-		observer = null;
-	};
-}
-
-export function moveTile(source, target) {
-
-  let modifiedBank = tilePositions.bank;
-  let modifiedGrid = tilePositions.grid
-
-
-  // add tile
-  if (target.row === 99) { // target going into bank
-    modifiedBank[target.col] = target.letter;
-  }
-  else // target goes into grid
-  {
-    let gridIdx = modifiedGrid.findIndex( ele => {
-      return ele.row === target.row && ele.col === target.col;
-    })
-    modifiedGrid[gridIdx] = { letter: source.letter, row: target.row, col: target.col };
-  }
-
-  // remove tile
-  if (source.row === 99) { // remove source from bank
-    modifiedBank[source.col] = null;
-  }
-  else { // remove source from grid
-    let gridIdx = modifiedGrid.findIndex( ele => {
-      return ele.row === source.row && ele.col === source.col;
-    })
-    modifiedGrid[gridIdx] = { letter: null, row: source.row, col: source.col };
-  }
-  
-  tilePositions = {
-    grid: modifiedGrid,
-    bank: modifiedBank,
-  }
-	emitChange();
 }

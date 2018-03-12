@@ -5,67 +5,8 @@ import { DropTarget } from 'react-dnd'
 import ItemTypes from './ItemTypes'
 
 import TileSlot from './tileSlot'
-import store, { updateGrid, updateBank } from '../store';
+import { moveTile } from '../utils/game'
 
-function moveTile (source, target) {
-	console.log('target: ', target);
-	console.log('source: ', source);
-
-  let modifiedBank = store.getState().bank;
-  let modifiedGrid = store.getState().grid;
-
-	// add tile
-	if (target && target.row === 99 && source.row === 99) { // source is from bank, target is in bank
-		console.log('bank to bank')
-
-		if (target.letter) {
-			modifiedBank[source.col] = target;
-		} else {
-			modifiedBank[source.col] = null;
-		}
-		modifiedBank[target.col] = source;
-		
-		store.dispatch(updateBank(modifiedBank));
-
-	} else if (target && target.row !== 99 && source.row === 99) { // source is from bank, target is in grid
-		console.log('bank to grid')
-		let gridIdx = modifiedGrid.findIndex( ele => {
-      		return ele.row === target.row && ele.col === target.col;
-		})
-		modifiedGrid[gridIdx].letter = source.letter;
-
-		if (target.letter) {
-			modifiedBank[source.col] = target;
-		} else {
-			modifiedBank[source.col] = null;
-		}
-		store.dispatch(updateGrid(modifiedGrid));
-		store.dispatch(updateBank(modifiedBank));
-
-  	} else if (target && target.row !== 99 && source.row !== 99) {
-		console.log('grid to grid')
-		let gridIdxTarget = modifiedGrid.findIndex( ele => {
-			return ele.row === target.row && ele.col === target.col;
-		})
-		let gridIdxSource = modifiedGrid.findIndex( ele => {
-			return ele.row === source.row && ele.col === source.col;
-		})
-
-		modifiedGrid[gridIdxTarget].letter = source.letter;
-		modifiedGrid[gridIdxSource].letter = target.letter;
-		store.dispatch(updateGrid(modifiedGrid));
-
-	} else {
-		console.log('grid to bank')
-		let fromGridIdx = modifiedGrid.findIndex( ele => {
-			return ele.row === source.row && ele.col === source.col;
-		})
-		modifiedGrid[fromGridIdx].letter = target.letter;
-		modifiedBank[target.col] = source;
-		store.dispatch(updateGrid(modifiedGrid));
-		store.dispatch(updateBank(modifiedBank));
-	}
-}
 
 const squareTarget = {
 	drop(props, monitor) {

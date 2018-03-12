@@ -47,7 +47,6 @@ function collect(connect, monitor) {
 
 class Tile extends Component {
 
-
   constructor(props) {
     super(props);
     this.state = { letter: this.props.value };
